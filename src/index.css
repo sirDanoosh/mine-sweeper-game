@@ -1,0 +1,84 @@
+.star {
+    color: grey;
+    font-size: 35px;
+    cursor: pointer;
+}
+
+.star.active{
+    color: gold;
+}
+
+.radiobtn{
+    opacity:0 !important;
+    width:0 !important;
+    height:0 !important;
+}
+
+.diffContainer{
+    border: 1px grey solid;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    padding: 3px;
+    margin: 0;
+    width: 220px;
+}
+
+.sizeContainer{
+    border: 1px grey solid;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    padding: 3px;
+    margin: 0;
+    width: 220px;
+}
+
+.size {
+    color: grey;
+    font-size: 50px;
+    cursor: pointer;
+    margin: 7px;
+}
+
+.size-small {
+    font-size: 30px;
+}
+
+.size-medium {
+    font-size: 45px;
+}
+
+.size-large {
+    font-size: 60px;
+}
+
+.size.active {
+    color: burlywood;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+h2{
+    color: #060b26;
+    background-color: #1a83ff;
+    width: 226px;
+    height: 40px;
+    text-align: center;
+    text-anchor: middle;
+    padding:0;
+    margin:0;
+    border: 1px solid grey;
+}
+
+.startbtn{
+    color: #060b26;
+    background-color: #1a83ff;
+    border: 0;
+    border-radius: 50%;
+}
