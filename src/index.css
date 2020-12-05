@@ -21,7 +21,7 @@
     align-items: center;
     padding: 3px;
     margin: 0;
-    width: 220px;
+    width: 234px;
 }
 
 .sizeContainer{
@@ -31,7 +31,7 @@
     align-items: center;
     padding: 3px;
     margin: 0;
-    width: 220px;
+    width: 234px;
 }
 
 .size {
@@ -67,7 +67,7 @@
 h2{
     color: #060b26;
     background-color: #1a83ff;
-    width: 226px;
+    width: 240px;
     height: 40px;
     text-align: center;
     text-anchor: middle;

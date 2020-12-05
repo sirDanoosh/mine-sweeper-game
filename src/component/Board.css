@@ -1,0 +1,85 @@
+.container-board{
+    border: 1px grey solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    margin: 0;
+    width: 240px;
+    flex-wrap: wrap;
+    flex-direction: row;
+    background-color: grey;
+}
+
+.btn{
+    padding: 0px;
+    margin: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bobmIcon{
+    font-size: 10px;
+    color: red;
+}
+
+.btn-size-9{
+    border: 0.5px solid grey;
+    background-color: rgb(250,250,0);
+    width: 25px;
+    height: 25px;
+}
+
+.btn-size-13{
+    border: 0.5px solid grey;
+    background-color: rgb(250,250,0);
+    width: 18px;
+    height: 18px;
+}
+
+.btn-size-17{
+    border: 0.5px solid grey;
+    background-color: rgb(250,250,0);
+    width: 14px;    
+    height: 14px;
+}
+
+.btn-1{
+    color: rgb(0,150,250);
+}
+
+.btn-2{
+    color: rgb(200,150,250);
+}
+
+.btn-3{
+    color: rgb(250,100,250);
+}
+
+.btn-4{
+    color: rgb(250,100,100);
+}
+
+.btn-5{
+    color: rgb(250,50,0);
+}
+
+.btn-6{
+    color: rgb(200,0,200);
+}
+
+.btn-7{
+    color: rgb(250,0,0);
+}
+
+.btn-8{
+    color: rgb(0,0,0);
+}
+
+.bombsCount{
+    color: blue;
+    padding: 0px;
+    margin: 0px;
+    text-align: center;
+}

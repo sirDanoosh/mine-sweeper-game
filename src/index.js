@@ -18,19 +18,19 @@ function Game() {
             <div className={`diffContainer`}>
                 <h6>dificullity</h6>
                 <label>
-                    <input type="radio" value={1} name="diff" className="radiobtn" onClick={(e)=>changeDiff(e.target.value)}/>
+                    <input type="radio" value={1} name="diff" className="radiobtn" onClick={(e)=>changeDiff(Number(e.target.value))}/>
                     <AiIcon.AiFillStar className={`star star-easy ${diff === 0 ? "diactive" : "active"}`} />
                 </label>
                 <label>
-                    <input type="radio" value={2} name="diff" className="radiobtn" onClick={(e)=>changeDiff(e.target.value)}/>
+                    <input type="radio" value={2} name="diff" className="radiobtn" onClick={(e)=>changeDiff(Number(e.target.value))}/>
                     <AiIcon.AiFillStar className={`star star-medium ${diff > 1 ? "active" : "deactive"}`} />
                 </label>
                 <label>
-                    <input type="radio" value={3} name="diff" className="radiobtn" onClick={(e)=>changeDiff(e.target.value)}/>
+                    <input type="radio" value={3} name="diff" className="radiobtn" onClick={(e)=>changeDiff(Number(e.target.value))}/>
                     <AiIcon.AiFillStar className={`star star-hard ${diff > 2 ? "active" : "deactive"}`} />
                 </label>
                 <label>
-                    <input type="radio" value={4} name="diff" className="radiobtn" onClick={(e)=>changeDiff(e.target.value)}/>
+                    <input type="radio" value={4} name="diff" className="radiobtn" onClick={(e)=>changeDiff(Number(e.target.value))}/>
                     <AiIcon.AiFillStar className={`star star-extreme ${diff > 3 ? "active" : "deactive"}`} />
                 </label>
             </div>
@@ -38,16 +38,16 @@ function Game() {
             <div className={`sizeContainer`}>
                 <h6>size</h6>
                 <label>
-                    <input type="radio" value={9} name="size" className="radiobtn" onClick={(e)=>changeSize(e.target.value)}/>
-                    <CgIcon.CgMenuGridR className={`size size-small ${size == 9 ? "active" : "deactive"}`} />
+                    <input type="radio" value={9} name="size" className="radiobtn" onClick={(e)=>changeSize(Number(e.target.value))}/>
+                    <CgIcon.CgMenuGridR className={`size size-small ${size === 9 ? "active" : "deactive"}`} />
                 </label>
                 <label>
-                    <input type="radio" value={13} name="size" className="radiobtn" onClick={(e)=>changeSize(e.target.value)}/>
-                    <CgIcon.CgMenuGridR className={`size size-medium ${size == 13 ? "active" : "deactive"}`} />
+                    <input type="radio" value={13} name="size" className="radiobtn" onClick={(e)=>changeSize(Number(e.target.value))}/>
+                    <CgIcon.CgMenuGridR className={`size size-medium ${size === 13 ? "active" : "deactive"}`} />
                 </label>
                 <label>
-                    <input type="radio" value={17} name="size" className="radiobtn" onClick={(e)=>changeSize(e.target.value)}/>
-                    <CgIcon.CgMenuGridR className={`size size-large ${size == 17 ? "active" : "deactive"}`} />
+                    <input type="radio" value={17} name="size" className="radiobtn" onClick={(e)=>changeSize(Number(e.target.value))}/>
+                    <CgIcon.CgMenuGridR className={`size size-large ${size === 17 ? "active" : "deactive"}`} />
                 </label>
             </div>
             {/* <button type="submit" className="btn startbtn">Start</button> */}
