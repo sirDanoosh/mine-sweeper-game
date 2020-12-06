@@ -1,11 +1,11 @@
 import React from 'react'
-import { FaBomb } from 'react-icons/fa'
 import './Board.css'
 
 function Board({ boardSize, dificullity }) {
     let minesCount = 20;
     const diffCoeff = (dificullity === 1 ? 0.25 : dificullity === 2 ? 0.40 : dificullity === 3 ? 0.6 : 0.8)
     minesCount = (Math.floor(boardSize * boardSize * diffCoeff))
+
     const minesLocation = Array(minesCount).fill(0)
     for (let i = 0; i < minesCount; i++){
         const newBombLocation = Math.floor(Math.random() * (boardSize * boardSize))
@@ -15,6 +15,7 @@ function Board({ boardSize, dificullity }) {
             i--;
         }
     }
+
     const boardMap = new Array(boardSize)
     for (let i = 0; i < boardSize; i++)
         boardMap[i]=new Array(boardSize).fill(0)
@@ -87,15 +88,78 @@ function Board({ boardSize, dificullity }) {
             }
         }
     }
-
-    const Square = ({value}) => {
-        if (value >= 10) {
-            return <button className={`btn btn-bomb btn-size-${boardSize}`} type="button" ><FaBomb className="bobmIcon"/></button>
-        } else if (value === 0) {
-            return <button className={`btn btn-empty btn-size-${boardSize}`} type="button" > </button>
-        } else {
-            return <button className={`btn btn-numbered btn-size-${boardSize} btn-${value}`} type="button" >{value}</button>
+    let ableToCountinue = 1;
+    const winOrLoos = (detector) => {
+        if (detector) {
+            document.getElementById("maintext").innerText = "You Lost! try again..."
+            document.getElementById("maintext").className = `${document.getElementById("maintext").className} lostText`
+            ableToCountinue = 0
+            for (let i = 0; i < boardSize * boardSize; i++){
+                let value = forCreatingTable[i]
+                if (value >= 10) {
+                    if (document.getElementById(`btn__${i}`).flaged) {
+                        document.getElementById(`btn__${i}`).className = `${document.getElementById(`btn__${i}`).className} correct`
+                    }
+                    else {
+                        document.getElementById(`btn__${i}`).innerHTML = "<i class='fa bombIcon'>&#xf1e2</i>"
+                        document.getElementById(`btn__${i}`).className = `${document.getElementById(`btn__${i}`).className} disabled`
+                    }
+                }
+                document.getElementById(`btn__${i}`).disabled = true
+            }
         }
+        return ableToCountinue
+    }
+
+    const ClickedButton = ({ e, value, location }) => {
+        if (winOrLoos(0)) {
+            if (e.type === 'click') {
+                if (document.getElementById(`btn__${location}`).flaged) {
+                    document.getElementById(`btn__${location}`).flaged = false
+                    document.getElementById(`btn__${location}`).innerHTML= " "
+                }
+                if (!document.getElementById(`btn__${location}`).disabled) {
+                    if (value >= 10) {
+                        document.getElementById(`btn__${location}`).innerHTML = "<i class='fa bombIcon'>&#xf1e2</i>"
+                        document.getElementById(`btn__${location}`).disabled = true
+                        document.getElementById(`btn__${location}`).className = `${document.getElementById(`btn__${location}`).className} disabled`
+                        winOrLoos(1)
+                    } else if (value === 0) {
+                        document.getElementById(`btn__${location}`).disabled = true
+                        document.getElementById(`btn__${location}`).className = `${document.getElementById(`btn__${location}`).className} disabled`
+                    } else {
+                        document.getElementById(`btn__${location}`).innerHTML = `${value}`
+                        document.getElementById(`btn__${location}`).disabled = true
+                        document.getElementById(`btn__${location}`).className = `${document.getElementById(`btn__${location}`).className} disabled btn-${value}`
+                    }
+                }
+            } else if (e.type === 'contextmenu') {
+                if (!document.getElementById(`btn__${location}`).disabled) {
+                    if (document.getElementById(`btn__${location}`).flaged) {
+                        document.getElementById(`btn__${location}`).flaged = false
+                        document.getElementById(`btn__${location}`).innerHTML = " "
+                    } else {
+                        document.getElementById(`btn__${location}`).innerHTML = "<i class='fa flagIcon'>&#xf024</i>"
+                        document.getElementById(`btn__${location}`).flaged = true
+                    }
+                }
+            }
+        }
+    }
+
+    const Square = ({ value , location}) => {
+        return <button contextMenu="none"
+            id={`btn__${location}`}
+            className={`btn btn-size-${boardSize}`}
+            type="button"
+            onClick={(e) => {
+                ClickedButton({ e, value, location })
+            }}
+            onContextMenu={(e) => {
+                e.preventDefault()
+                ClickedButton({ e, value, location })
+            }}
+        > </button>
     }
 
     const forCreatingTable = Array(boardSize * boardSize)
@@ -107,10 +171,10 @@ function Board({ boardSize, dificullity }) {
 
     return (
         <div>
-        <h6 className="bombsCount">number of bombs : {minesCount}</h6>
+        <h6 className="bombsCount" id="maintext">number of bombs : {minesCount}</h6>
         <div className="container-board">
             {forCreatingTable.map((value, index) => {
-                return <Square key={index.toString()} value={value}/>
+                return <Square key={index.toString()} value={value} location={index}/>
             })}
             </div>
         </div>
