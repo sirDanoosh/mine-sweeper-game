@@ -77,8 +77,10 @@ h2{
 }
 
 .startbtn{
-    color: #060b26;
-    background-color: #1a83ff;
+    color: brown;
+    background-color: greenyellow;
     border: 0;
-    border-radius: 50%;
+    padding: 3px;
+    margin: 3px;
+    font-size: larger;
 }

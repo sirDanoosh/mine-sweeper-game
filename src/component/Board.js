@@ -1,6 +1,8 @@
 import React from 'react'
 import './Board.css'
 
+
+
 function Board({ boardSize, dificullity }) {
     let minesCount = 20;
     const diffCoeff = (dificullity === 1 ? 0.25 : dificullity === 2 ? 0.40 : dificullity === 3 ? 0.6 : 0.8)
@@ -102,7 +104,7 @@ function Board({ boardSize, dificullity }) {
                     }
                     else {
                         document.getElementById(`btn__${i}`).innerHTML = "<i class='fa bombIcon'>&#xf1e2</i>"
-                        document.getElementById(`btn__${i}`).className = `${document.getElementById(`btn__${i}`).className} disabled`
+                        document.getElementById(`btn__${i}`).className = `${document.getElementById(`btn__${i}`).className}`
                     }
                 }
                 document.getElementById(`btn__${i}`).disabled = true
@@ -111,7 +113,7 @@ function Board({ boardSize, dificullity }) {
         return ableToCountinue
     }
 
-    const ClickedButton = ({ e, value, location }) => {
+    const ClickedButton = ({e, value, location }) => {
         if (winOrLoos(0)) {
             if (e.type === 'click') {
                 if (document.getElementById(`btn__${location}`).flaged) {
@@ -124,6 +126,7 @@ function Board({ boardSize, dificullity }) {
                         document.getElementById(`btn__${location}`).disabled = true
                         document.getElementById(`btn__${location}`).className = `${document.getElementById(`btn__${location}`).className} disabled`
                         winOrLoos(1)
+                        return
                     } else if (value === 0) {
                         document.getElementById(`btn__${location}`).disabled = true
                         document.getElementById(`btn__${location}`).className = `${document.getElementById(`btn__${location}`).className} disabled`
@@ -132,6 +135,60 @@ function Board({ boardSize, dificullity }) {
                         document.getElementById(`btn__${location}`).disabled = true
                         document.getElementById(`btn__${location}`).className = `${document.getElementById(`btn__${location}`).className} disabled btn-${value}`
                     }
+                    // let i = Math.floor(location / (boardSize - 1))
+                    // let j = location - (i * (boardSize))
+                    // let indicator = 1;
+                    // while (indicator) {
+                    //     if (boardMap[i][j - 1] < 10) {
+                    //         const val = boardMap[i][j - 1]
+                    //         const loc = (i * (boardSize) + (j - 1))
+
+
+                    //     }
+                    //     else if (boardMap[i][j + 1] < 10) {
+                    //         const val = boardMap[i][j + 1]
+                    //         const loc = (i * (boardSize) + (j + 1))
+                    //         console.log([e, val, loc, '2'])
+                    //         ClickedButton({ e, val, loc })
+                    //     }
+                    //     else if (boardMap[i - 1][j - 1] < 10) {
+                    //         const val = boardMap[i - 1][j - 1]
+                    //         const loc = ((i - 1) * (boardSize) + (j - 1))
+                    //         console.log([e, val, loc, '3'])
+                    //         ClickedButton({ e, val, loc })
+                    //     }
+                    //     else if (boardMap[i - 1][j + 1] < 10) {
+                    //         const val = boardMap[i - 1][j + 1]
+                    //         const loc = ((i - 1) * (boardSize) + (j + 1))
+                    //         console.log([e, val, loc, '4'])
+                    //         ClickedButton({ e, val, loc })
+                    //     }
+                    //     else if (boardMap[i - 1][j] < 10) {
+                    //         const val = boardMap[i - 1][j]
+                    //         const loc = ((i - 1) * (boardSize) + j)
+                    //         console.log([e, val, loc, '5'])
+                    //         ClickedButton({ e, val, loc })
+                    //     }
+                    //     else if (boardMap[i + 1][j - 1] < 10) {
+                    //         const val = boardMap[i + 1][j - 1]
+                    //         const loc = ((i + 1) * (boardSize) + (j - 1))
+                    //         console.log([e, val, loc, '6'])
+                    //         ClickedButton({ e, val, loc })
+                    //     }
+                    //     else if (boardMap[i + 1][j + 1] < 10) {
+                    //         const val = boardMap[i + 1][j + 1]
+                    //         const loc = ((i + 1) * (boardSize) + (j + 1))
+                    //         console.log([e, val, loc, '7'])
+                    //         ClickedButton({ e, val, loc })
+                    //     }
+                    //     else if (boardMap[i + 1][j] < 10) {
+                    //         const val = boardMap[i + 1][j]
+                    //         const loc = ((i + 1) * (boardSize) + j)
+                    //         console.log([e, val, loc, '8'])
+                    //         ClickedButton({ e, val, loc })
+                    //     }
+                    //     indicator = 0
+                    // }
                 }
             } else if (e.type === 'contextmenu') {
                 if (!document.getElementById(`btn__${location}`).disabled) {
