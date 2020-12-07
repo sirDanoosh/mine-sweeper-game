@@ -11,6 +11,17 @@
     background-color: grey;
 }
 
+.container-game{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    margin: 0;
+    width: 240px;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
 .btn{
     padding: 0px;
     margin: 0px;
@@ -99,5 +110,10 @@
 
 .lostText{
     color: brown;
+    font-size: larger;
+}
+
+.winText{
+    color: green;
     font-size: larger;
 }

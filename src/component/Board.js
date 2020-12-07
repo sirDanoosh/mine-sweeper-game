@@ -4,100 +4,55 @@ import './Board.css'
 
 
 function Board({ boardSize, dificullity }) {
-    let minesCount = 20;
-    const diffCoeff = (dificullity === 1 ? 0.25 : dificullity === 2 ? 0.40 : dificullity === 3 ? 0.6 : 0.8)
-    minesCount = (Math.floor(boardSize * boardSize * diffCoeff))
+    const difficulityCoeff = (dificullity === 1 ? 0.40 : dificullity === 2 ? 0.50 : dificullity === 3 ? 0.55 : 0.60)
+    const minesCount = Math.floor(boardSize * boardSize * difficulityCoeff)    
 
     const minesLocation = Array(minesCount).fill(0)
+    const boardIndex = Array.from(Array(boardSize * boardSize).keys())
+
     for (let i = 0; i < minesCount; i++){
-        const newBombLocation = Math.floor(Math.random() * (boardSize * boardSize))
-        if (!(minesLocation.find(element => element === newBombLocation))) {
-            minesLocation[i]=newBombLocation+1
-        } else {
-            i--;
-        }
+        const newMineLocation = Math.floor(Math.random() * ((boardSize * boardSize ) -1 - i))
+        minesLocation[i] = boardIndex[newMineLocation]
+        let temp = boardIndex[newMineLocation]
+        boardIndex[newMineLocation] = boardIndex[(boardSize * boardSize) -1 - i]
+        boardIndex[(boardSize * boardSize) - 1] = temp
     }
 
-    const boardMap = new Array(boardSize)
-    for (let i = 0; i < boardSize; i++)
-        boardMap[i]=new Array(boardSize).fill(0)
-    for (let i = 0; i < boardSize; i++){
-        for (let j = 0; j < boardSize; j++){
-            if (minesLocation.find(element => element === (i * 9) + j + 1)) {
-                boardMap[i][j] = 10
-                if (i === 0) {
-                    if (j === 0) {
-                        boardMap[i][j + 1]++
-                        boardMap[i + 1][j]++
-                        boardMap[i + 1][j + 1]++
-                    }
-                    else if (j === boardSize - 1) {
-                        boardMap[i][j - 1]++ 
-                        boardMap[i + 1][j - 1]++
-                        boardMap[i + 1][j]++
-                    }
-                    else {
-                        boardMap[i][j - 1]++
-                        boardMap[i][j + 1]++
-                        boardMap[i + 1][j - 1]++
-                        boardMap[i + 1][j]++
-                        boardMap[i + 1][j + 1]++
-                    }
-                } else if (i === boardSize - 1) {
-                    if (j === 0) {
-                        boardMap[i - 1][j]++
-                        boardMap[i - 1][j + 1]++
-                        boardMap[i][j + 1]++
-                    }
-                    else if (j === boardSize - 1) {
-                        boardMap[i - 1][j - 1]++
-                        boardMap[i - 1][j]++
-                        boardMap[i][j - 1]++
-                    }
-                    else {
-                        boardMap[i - 1][j - 1]++
-                        boardMap[i - 1][j]++
-                        boardMap[i - 1][j + 1]++
-                        boardMap[i][j - 1]++
-                        boardMap[i][j + 1]++
-                    }
-                } else {
-                    if (j === 0) {
-                        boardMap[i - 1][j]++
-                        boardMap[i - 1][j + 1]++
-                        boardMap[i][j + 1]++
-                        boardMap[i + 1][j]++
-                        boardMap[i + 1][j + 1]++
-                    }
-                    else if (j === boardSize - 1) {
-                        boardMap[i - 1][j - 1]++
-                        boardMap[i - 1][j]++
-                        boardMap[i][j - 1]++
-                        boardMap[i + 1][j - 1]++
-                        boardMap[i + 1][j]++
-                    }
-                    else {
-                        boardMap[i - 1][j - 1]++
-                        boardMap[i - 1][j]++
-                        boardMap[i - 1][j + 1]++
-                        boardMap[i][j - 1]++
-                        boardMap[i][j + 1]++
-                        boardMap[i + 1][j - 1]++
-                        boardMap[i + 1][j]++
-                        boardMap[i + 1][j + 1]++
-                    }
-                }
-            }
-        }
-    }
-    let ableToCountinue = 1;
+    const boardMap = Array(boardSize * boardSize).fill(0)
+
+    minesLocation.map((item) => {
+        boardMap[item] = Number(10)
+        let i = Math.floor(item/boardSize)
+        if ( typeof boardMap[item - 1] != "undefined" && Math.floor((item - 1) / boardSize) === i)
+            boardMap[item - 1]++
+        if (typeof boardMap[item + 1] != "undefined" && Math.floor((item + 1) / boardSize) === i)
+            boardMap[item + 1]++
+        if (typeof boardMap[item - boardSize - 1] != "undefined" && Math.floor((item - boardSize - 1) / boardSize) === i - 1)
+            boardMap[item - boardSize - 1]++
+        if (typeof boardMap[item - boardSize] != "undefined" && Math.floor((item - boardSize) / boardSize) === i - 1)
+            boardMap[item - boardSize]++
+        if (typeof boardMap[item - boardSize + 1] != "undefined" && Math.floor((item - boardSize + 1) / boardSize) === i - 1)
+            boardMap[item - boardSize + 1]++
+        if (typeof boardMap[item + boardSize + 1] != "undefined" && Math.floor((item + boardSize + 1) / boardSize) === i + 1)
+            boardMap[item + boardSize + 1]++
+        if (typeof boardMap[item + boardSize] != "undefined" && Math.floor((item + boardSize) / boardSize) === i + 1)
+            boardMap[item + boardSize]++
+        if (typeof boardMap[item + boardSize + 1] != "undefined" && Math.floor((item + boardSize - 1) / boardSize) === i + 1)
+            boardMap[item + boardSize - 1]++
+        
+        return boardMap
+    })
+
+    let disabledCount = 0;
+
+    let correctFlagCount = 0;
+
     const winOrLoos = (detector) => {
-        if (detector) {
+        if (detector >= 10) {
             document.getElementById("maintext").innerText = "You Lost! try again..."
             document.getElementById("maintext").className = `${document.getElementById("maintext").className} lostText`
-            ableToCountinue = 0
-            for (let i = 0; i < boardSize * boardSize; i++){
-                let value = forCreatingTable[i]
+            for (let i = 0; i < boardSize * boardSize; i++) {
+                let value = boardMap[i]
                 if (value >= 10) {
                     if (document.getElementById(`btn__${i}`).flaged) {
                         document.getElementById(`btn__${i}`).className = `${document.getElementById(`btn__${i}`).className} correct`
@@ -110,129 +65,124 @@ function Board({ boardSize, dificullity }) {
                 document.getElementById(`btn__${i}`).disabled = true
             }
         }
-        return ableToCountinue
-    }
-
-    const ClickedButton = ({e, value, location }) => {
-        if (winOrLoos(0)) {
-            if (e.type === 'click') {
-                if (document.getElementById(`btn__${location}`).flaged) {
-                    document.getElementById(`btn__${location}`).flaged = false
-                    document.getElementById(`btn__${location}`).innerHTML= " "
-                }
-                if (!document.getElementById(`btn__${location}`).disabled) {
-                    if (value >= 10) {
-                        document.getElementById(`btn__${location}`).innerHTML = "<i class='fa bombIcon'>&#xf1e2</i>"
-                        document.getElementById(`btn__${location}`).disabled = true
-                        document.getElementById(`btn__${location}`).className = `${document.getElementById(`btn__${location}`).className} disabled`
-                        winOrLoos(1)
-                        return
-                    } else if (value === 0) {
-                        document.getElementById(`btn__${location}`).disabled = true
-                        document.getElementById(`btn__${location}`).className = `${document.getElementById(`btn__${location}`).className} disabled`
-                    } else {
-                        document.getElementById(`btn__${location}`).innerHTML = `${value}`
-                        document.getElementById(`btn__${location}`).disabled = true
-                        document.getElementById(`btn__${location}`).className = `${document.getElementById(`btn__${location}`).className} disabled btn-${value}`
-                    }
-                    // let i = Math.floor(location / (boardSize - 1))
-                    // let j = location - (i * (boardSize))
-                    // let indicator = 1;
-                    // while (indicator) {
-                    //     if (boardMap[i][j - 1] < 10) {
-                    //         const val = boardMap[i][j - 1]
-                    //         const loc = (i * (boardSize) + (j - 1))
-
-
-                    //     }
-                    //     else if (boardMap[i][j + 1] < 10) {
-                    //         const val = boardMap[i][j + 1]
-                    //         const loc = (i * (boardSize) + (j + 1))
-                    //         console.log([e, val, loc, '2'])
-                    //         ClickedButton({ e, val, loc })
-                    //     }
-                    //     else if (boardMap[i - 1][j - 1] < 10) {
-                    //         const val = boardMap[i - 1][j - 1]
-                    //         const loc = ((i - 1) * (boardSize) + (j - 1))
-                    //         console.log([e, val, loc, '3'])
-                    //         ClickedButton({ e, val, loc })
-                    //     }
-                    //     else if (boardMap[i - 1][j + 1] < 10) {
-                    //         const val = boardMap[i - 1][j + 1]
-                    //         const loc = ((i - 1) * (boardSize) + (j + 1))
-                    //         console.log([e, val, loc, '4'])
-                    //         ClickedButton({ e, val, loc })
-                    //     }
-                    //     else if (boardMap[i - 1][j] < 10) {
-                    //         const val = boardMap[i - 1][j]
-                    //         const loc = ((i - 1) * (boardSize) + j)
-                    //         console.log([e, val, loc, '5'])
-                    //         ClickedButton({ e, val, loc })
-                    //     }
-                    //     else if (boardMap[i + 1][j - 1] < 10) {
-                    //         const val = boardMap[i + 1][j - 1]
-                    //         const loc = ((i + 1) * (boardSize) + (j - 1))
-                    //         console.log([e, val, loc, '6'])
-                    //         ClickedButton({ e, val, loc })
-                    //     }
-                    //     else if (boardMap[i + 1][j + 1] < 10) {
-                    //         const val = boardMap[i + 1][j + 1]
-                    //         const loc = ((i + 1) * (boardSize) + (j + 1))
-                    //         console.log([e, val, loc, '7'])
-                    //         ClickedButton({ e, val, loc })
-                    //     }
-                    //     else if (boardMap[i + 1][j] < 10) {
-                    //         const val = boardMap[i + 1][j]
-                    //         const loc = ((i + 1) * (boardSize) + j)
-                    //         console.log([e, val, loc, '8'])
-                    //         ClickedButton({ e, val, loc })
-                    //     }
-                    //     indicator = 0
-                    // }
-                }
-            } else if (e.type === 'contextmenu') {
-                if (!document.getElementById(`btn__${location}`).disabled) {
-                    if (document.getElementById(`btn__${location}`).flaged) {
-                        document.getElementById(`btn__${location}`).flaged = false
-                        document.getElementById(`btn__${location}`).innerHTML = " "
-                    } else {
-                        document.getElementById(`btn__${location}`).innerHTML = "<i class='fa flagIcon'>&#xf024</i>"
-                        document.getElementById(`btn__${location}`).flaged = true
-                    }
-                }
-            }
+        else if (disabledCount === boardSize * boardSize - minesCount || correctFlagCount === minesCount) {
+            document.getElementById("maintext").innerText = "You Won! lets play another game"
+            document.getElementById("maintext").className = `${document.getElementById("maintext").className} winText`
         }
     }
 
-    const Square = ({ value , location}) => {
+    const toTurnOn = []
+    const checkedCells = []
+    const checkNeighbours = (location, mainloc) => {
+        if (checkedCells.find(element => element === location + 1))
+            return toTurnOn
+        
+        checkedCells.push(location + 1)
+        let i = Math.floor(location / boardSize)
+        let path = document.getElementById(`btn__${location}`)
+
+        if (location !== mainloc && ( path.disabled || path.flaged || boardMap[location] >= 10)) {
+            return toTurnOn
+        } 
+
+        if (boardMap[location - 1] < 10 && Math.floor((location - 1) / boardSize) === i) {
+            checkNeighbours(location - 1, mainloc)
+        }
+        if (boardMap[location + 1] < 10 && Math.floor((location + 1) / boardSize) === i)
+            checkNeighbours(location + 1, mainloc)
+
+        if (boardMap[location - boardSize] < 10 && Math.floor((location - boardSize) / boardSize) === i - 1)
+            checkNeighbours(location - boardSize, mainloc)
+
+        if (boardMap[location + boardSize] < 10 && Math.floor((location + boardSize) / boardSize) === i + 1)
+            checkNeighbours(location + boardSize, mainloc)
+        
+        toTurnOn.push(location)
+        return toTurnOn
+    }
+
+    const ClickedButton = ({ e, location }) => {
+        let value = boardMap[location]
+        const identifier = document.getElementById(`btn__${location}`)
+        let toTurn = []
+        let status = identifier.disabled ? "disabled" :
+            identifier.flaged ? "flaged" : "nothing"
+
+        if (e.type === 'click') {
+            if (status === "flaged") {
+                identifier.flaged = false
+                identifier.innerHTML = " "
+                status = "nothing"
+            }
+
+            if (status === "nothing") {
+                if (value >= 10) {
+                    identifier.innerHTML = "<i class='fa bombIcon'>&#xf1e2</i>"
+                    document.getElementById(`btn__${location}`).className = `${document.getElementById(`btn__${location}`).className} disabled`
+                    document.getElementById(`btn__${location}`).disabled = true
+                    disabledCount++
+                    winOrLoos(value)
+                }
+                else {
+                    toTurn = checkNeighbours(location, location)
+                    toTurn.push(location)
+                    toTurn.map(item => {
+                        if (!document.getElementById(`btn__${item}`).disabled) {
+                            value = boardMap[item]
+                            if (value !== 0) {
+                                document.getElementById(`btn__${item}`).innerHTML = `${value}`
+                                document.getElementById(`btn__${item}`).className = `${identifier.className} btn-${value}`
+                            }
+                            document.getElementById(`btn__${item}`).className = `${document.getElementById(`btn__${item}`).className} disabled`
+                            document.getElementById(`btn__${item}`).disabled = true
+                            disabledCount++
+                        }
+                        return 0
+                    })
+                    winOrLoos(0)
+                }
+            }
+        } else if (e.type === 'contextmenu') {
+            if (!identifier.disabled) {
+                if (identifier.flaged) {
+                    identifier.flaged = false
+                    identifier.innerHTML = " "
+                    if (value >= 10)
+                        correctFlagCount--
+                }
+                else {
+                    identifier.innerHTML = "<i class='fa flagIcon'>&#xf024</i>"
+                    identifier.flaged = true
+                    if (value >= 10)
+                        correctFlagCount++
+                }
+            }
+            winOrLoos(0)
+        }
+    }
+    console.log(minesLocation)
+    const Square = ({location}) => {
         return <button contextMenu="none"
             id={`btn__${location}`}
             className={`btn btn-size-${boardSize}`}
             type="button"
             onClick={(e) => {
-                ClickedButton({ e, value, location })
+                ClickedButton({ e, location })
             }}
             onContextMenu={(e) => {
                 e.preventDefault()
-                ClickedButton({ e, value, location })
+                ClickedButton({ e, location })
             }}
         > </button>
     }
 
-    const forCreatingTable = Array(boardSize * boardSize)
-    for (let i = 0; i < boardSize; i++){
-        for (let j = 0; j < boardSize; j++){
-            forCreatingTable[i*boardSize + j] = Number(boardMap[i][j])
-        }
-    }
-
     return (
-        <div>
-        <h6 className="bombsCount" id="maintext">number of bombs : {minesCount}</h6>
-        <div className="container-board">
-            {forCreatingTable.map((value, index) => {
-                return <Square key={index.toString()} value={value} location={index}/>
-            })}
+        <div className="container-game">
+            <h6 className="bombsCount" id="maintext">number of bombs : {minesCount}</h6>
+            <div className="container-board">
+                {boardMap.map((value, index) => {
+                    return <Square key={index.toString()} location={index}/>
+                })}
             </div>
         </div>
     )
